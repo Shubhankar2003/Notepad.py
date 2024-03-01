@@ -2,6 +2,9 @@ import os
 import tkinter as tk
 from tkinter import messagebox
 from tkinter import filedialog
+from tkinter import simpledialog
+
+
 
 # ----------------------------------GLOBALS------------------------------------
 
@@ -74,7 +77,18 @@ def Paste():
     txt_area.event_generate("<<Paste>>")
 
 def Find():
-    pass
+    search_text = simpledialog.askstring("Find", "Enter text to find:")
+    if search_text:
+        start_index = "1.0"
+        while True:
+            start_index = text_widget.search(search_text, start_index, stopindex=tk.END)
+            if not start_index:
+                messagebox.showinfo("Find", "No more matches found.")
+                break
+            end_index = f"{start_index}+{len(search_text)}c"
+            text_widget.tag_add("found", start_index, end_index)
+            start_index = end_index
+        text_widget.tag_config("found", background="yellow", foreground="black")
 
 def Replace():
     pass
